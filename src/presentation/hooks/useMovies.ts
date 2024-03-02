@@ -4,6 +4,8 @@ import {Movie} from '../../core/entities/movie.entity';
 import * as UseCases from '../../core/use-cases/';
 import {movieDBFetcher} from '../../config/adapters/movieDB.adapter';
 
+let popularPageNumber = 1;
+
 export const useMovies = () => {
   // Estado para controlar la carga
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +21,12 @@ export const useMovies = () => {
   // Hacer una petición para obtener las películas en reproducción actual
   const initialLoad = useMemo(async () => {
     // Llama al caso de uso para obtener las películas en reproducción actual
-    const nowPlayingPromise = UseCases.moviesNowPlayingUseCase(movieDBFetcher);
-    const popularPromise = UseCases.moviesPopularUseCase(movieDBFetcher);
-    const TopRatedPromise = UseCases.moviesTopRatedUseCase(movieDBFetcher);
-    const UpcomingPromise = UseCases.moviesUpcomingUseCase(movieDBFetcher);
+    const nowPlayingPromise = UseCases.moviesNowPlayingUseCase(
+      movieDBFetcher(),
+    );
+    const popularPromise = UseCases.moviesPopularUseCase(movieDBFetcher());
+    const TopRatedPromise = UseCases.moviesTopRatedUseCase(movieDBFetcher());
+    const UpcomingPromise = UseCases.moviesUpcomingUseCase(movieDBFetcher());
     // Hacemos las promesas de forma simultanea
     const [nowPlayingMovies, popularMovies, TopRatedMovies, UpcomingMovies] =
       await Promise.all([
@@ -60,5 +64,18 @@ export const useMovies = () => {
     popular,
     topRated,
     upcoming,
+
+    // Metodos
+    popularNextPage: async () => {
+      popularPageNumber++;
+
+      const popularMovies = await UseCases.moviesPopularUseCase(
+        movieDBFetcher({
+          page: popularPageNumber,
+        }),
+      );
+
+      setPopular(prev => [...prev, ...popularMovies]);
+    },
   };
 };

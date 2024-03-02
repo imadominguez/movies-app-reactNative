@@ -1,5 +1,10 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 import {Movie} from '../../../core/entities/movie.entity';
 import {FlatList} from 'react-native-gesture-handler';
 import {MoviePoster} from './MoviePoster';
@@ -7,12 +12,38 @@ import {MoviePoster} from './MoviePoster';
 interface HorizontalCarouselProps {
   movies: Movie[];
   title?: string;
+  loadNextPage?: () => void;
 }
 
 export const HorizontalCarousel = ({
   movies,
   title,
+  loadNextPage,
 }: HorizontalCarouselProps) => {
+  const isLoading = useRef(false);
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (isLoading.current) return;
+
+    const {contentOffset, layoutMeasurement, contentSize} = event.nativeEvent;
+
+    const isEndReached =
+      contentOffset.x + layoutMeasurement.width + 600 >= contentSize.width;
+
+    if (!isEndReached) return;
+
+    isLoading.current = true;
+
+    // Cargar las siguientes peliculas
+    loadNextPage && loadNextPage();
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      isLoading.current = false;
+    }, 200);
+  }, [movies]);
+
   return (
     <View
       style={{
@@ -45,6 +76,7 @@ export const HorizontalCarousel = ({
         keyExtractor={item => item.id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
+        onScroll={onScroll}
       />
     </View>
   );
