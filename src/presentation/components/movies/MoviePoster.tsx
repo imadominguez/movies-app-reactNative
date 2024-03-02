@@ -8,12 +8,14 @@ interface MoviePosterProps {
   movie: Movie;
   height?: number;
   width?: number;
+  marginHorizontal?: number;
 }
 
 export const MoviePoster = ({
   movie,
   height = 420,
   width = 300,
+  marginHorizontal = 10,
 }: MoviePosterProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
@@ -24,11 +26,10 @@ export const MoviePoster = ({
         width,
         height,
         opacity: pressed ? 0.9 : 1,
-        marginHorizontal: 10,
+        marginHorizontal,
         paddingBottom: 20,
-        paddingHorizontal: 7,
       })}>
-      <View style={{...styles.imageContainer, width: 300, height: 400}}>
+      <View style={{...styles.imageContainer}}>
         <Image style={styles.image} source={{uri: movie.poster}} />
       </View>
     </Pressable>
