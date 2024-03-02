@@ -8,6 +8,13 @@ export interface NowPlayingResponse {
   total_results: number;
 }
 
+export interface MovieDBMoviesResponse {
+  page: number;
+  results: Result[];
+  total_pages: number;
+  total_results: number;
+}
+
 export interface Dates {
   maximum: string;
   minimum: string;

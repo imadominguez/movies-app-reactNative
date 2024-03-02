@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 import {useMovies} from '../../hooks/useMovies';
 
 export const HomeScreen = () => {
-  const {isLoading, nowPlaying} = useMovies();
+  const {isLoading, nowPlaying, popular, topRated, upcoming} = useMovies();
 
   return (
     <View
@@ -11,10 +11,6 @@ export const HomeScreen = () => {
         padding: 20,
       }}>
       <Text>HomeScreen</Text>
-
-      {isLoading && <Text>Cargando</Text>}
-
-      {nowPlaying && <Text>{JSON.stringify(nowPlaying)}</Text>}
     </View>
   );
 };
