@@ -6,10 +6,13 @@ import {RootStackParams} from '../../navigation/StackNavigation';
 import {useMovie} from '../../hooks/useMovie';
 import {MovieHeader} from '../../components/movie/MovieHeader';
 import {MovieDetails} from '../../components/movie/MovieDetails';
+import {LoaderFullScreen} from '../../components/loader/LoaderFullScreen';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface Props extends StackScreenProps<RootStackParams, 'Details'> {}
 
 export const DetailsScreen = ({route}: Props) => {
+  const {top} = useSafeAreaInsets();
   // const {movieId} = useRoute().params;
   const {movieId} = route.params;
 
@@ -17,17 +20,19 @@ export const DetailsScreen = ({route}: Props) => {
   const {isLoading, movie, cast} = useMovie(movieId);
 
   if (isLoading) {
-    return <Text>Cargando...</Text>;
+    return <LoaderFullScreen />;
   }
   return (
     <ScrollView>
-      <MovieHeader
-        title={movie!.title}
-        originalTitle={movie!.originalTitle}
-        poster={movie!.poster}
-      />
+      <View style={{marginTop: top, paddingBottom: 30}}>
+        <MovieHeader
+          title={movie!.title}
+          originalTitle={movie!.originalTitle}
+          poster={movie!.poster}
+        />
 
-      <MovieDetails movie={movie!} cast={cast!} />
+        <MovieDetails movie={movie!} cast={cast!} />
+      </View>
     </ScrollView>
   );
 };
