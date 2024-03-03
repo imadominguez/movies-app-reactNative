@@ -14,7 +14,7 @@ export const DetailsScreen = ({route}: Props) => {
   const {movieId} = route.params;
 
   // Hacer peticion a la api para obtener la informacion del movieId
-  const {isLoading, movie} = useMovie(movieId);
+  const {isLoading, movie, cast} = useMovie(movieId);
 
   if (isLoading) {
     return <Text>Cargando...</Text>;
@@ -27,7 +27,7 @@ export const DetailsScreen = ({route}: Props) => {
         poster={movie!.poster}
       />
 
-      <MovieDetails movie={movie!} />
+      <MovieDetails movie={movie!} cast={cast!} />
     </ScrollView>
   );
 };
