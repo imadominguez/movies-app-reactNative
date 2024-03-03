@@ -15,7 +15,6 @@ export class MovieMapper {
   }
 
   static formMovieIdResultToEntities(result: MovieDBMovieResponse): FullMovie {
-    console.log({result});
     return {
       id: result.id,
       title: result.title,
