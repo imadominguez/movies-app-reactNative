@@ -73,7 +73,7 @@ export const HorizontalCarousel = ({
             marginHorizontal={5}
           />
         )}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
