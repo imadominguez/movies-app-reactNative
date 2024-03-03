@@ -10,10 +10,17 @@ import {FullMovie} from '../../../core/entities/movie.entity';
 import {useNavigation} from '@react-navigation/native';
 
 interface MovieHeaderProps {
-  movie: FullMovie;
+  // movie: FullMovie;
+  poster: string;
+  originalTitle: string;
+  title: string;
 }
 
-export const MovieHeader = ({movie}: MovieHeaderProps) => {
+export const MovieHeader = ({
+  poster,
+  title,
+  originalTitle,
+}: MovieHeaderProps) => {
   const {height: screenHeight} = useWindowDimensions();
 
   const navigation = useNavigation();
@@ -22,18 +29,18 @@ export const MovieHeader = ({movie}: MovieHeaderProps) => {
     <>
       <View style={{...styles.imageContainer, height: screenHeight * 0.6}}>
         <View style={styles.imageBorder}>
-          <Image source={{uri: movie.poster}} style={styles.posterImage} />
+          <Image source={{uri: poster}} style={styles.posterImage} />
         </View>
       </View>
 
       <View style={styles.marginContainer}>
-        <Text style={styles.subTitle}>{movie.originalTitle}</Text>
-        <Text style={styles.title}>{movie.title}</Text>
+        <Text style={styles.subTitle}>{originalTitle}</Text>
+        <Text style={styles.title}>{title}</Text>
       </View>
 
       <View style={styles.backButton}>
         <Pressable onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>&#60;</Text>
+          <Text style={styles.backButtonText}>Volver</Text>
         </Pressable>
       </View>
     </>
@@ -74,6 +81,7 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 16,
     opacity: 0.8,
+    marginBottom: 5,
   },
   title: {
     fontSize: 20,
